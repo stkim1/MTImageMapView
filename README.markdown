@@ -1,10 +1,10 @@
-# MTImageMapView, HTML <map>-tag-like selection view
+# MTImageMapView, HTML map-like image map selection
 
 
 ## Screen Shots
 
-![Screen Shot ](./debug_shot.png "Debugging Path")
-![Screen Shot ](./normal_selection.png "Normal Selection")
+![Screen Shot](../debug_shot.png "Debugging Path")
+![Screen Shot](../normal_selection.png "Normal Selection")
 
 
 ## How to create image map
