@@ -3,11 +3,13 @@
 
 ## Screen Shots
 
-![Screen Shot](../debug_shot.png "Debugging Path")
-![Screen Shot](../normal_selection.png "Normal Selection")
+![Screen Shot](/Volumes/Data/Users/almightykim/temp/debug_shot.png "Debugging Path")
+![Screen Shot](/Volumes/Data/Users/almightykim/temp/normal_selection.png "Normal Selection")
 
 
 ## How to create image map
 
 1. Use tools like [Gimp](http://www.gimp.org/) and generate map.
-2. Copy only coordinates (e.g. "123,242,452,242,142,322") put them in an NSArray.
+2. Copy only coordinates (e.g. "123,242,452,242,142,322") and put them in an NSArray.
+3. Pass the array to map view.
+4. If 
