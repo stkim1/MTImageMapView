@@ -47,6 +47,7 @@
 @property (nonatomic, retain)   UIBezierPath        *mapArea;
 @property (nonatomic, readonly) NSUInteger          areaID;
 -(id)initWithCoordinate:(NSString*)inStrCoordinate areaID:(NSInteger)inAreaID;
+-(BOOL)isAreaSelected:(CGPoint)inPointTouch;
 @end
 
 #pragma mark Image Map View
@@ -230,7 +231,7 @@
 
     for(MTMapArea *anArea in areaArray)
     {
-        if(CGPathContainsPoint(anArea.mapArea.CGPath,NULL,aTouchPoint,false))
+        if([anArea isAreaSelected:aTouchPoint])
         {
             if(_delegate != nil
                && [_delegate conformsToProtocol:@protocol(MTImageMapDelegate)]
@@ -265,8 +266,8 @@
     [self
      performSelector:@selector(_performHitTestOnArea:)
      withObject:touchValue
-     afterDelay:0.2];
-    
+     afterDelay:0.1];
+
 #ifdef DEBUG_MAP_AREA
     [self.viewDebugPath setATouchPoint:touchPoint];
     [self.viewDebugPath setNeedsDisplay];
@@ -380,6 +381,11 @@
         [path release];
     }
     return self;
+}
+
+-(BOOL)isAreaSelected:(CGPoint)inPointTouch
+{
+    return CGPathContainsPoint(self.mapArea.CGPath,NULL,inPointTouch,false);
 }
 
 -(void)dealloc

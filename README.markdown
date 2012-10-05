@@ -1,27 +1,92 @@
 # MTImageMapView
 
-An UIImageView subclass to select one complex polygon out of many.
-Extremely useful for handling touches on map, puzzle, and image.
+An UIImageView subclass to select a complex polygon map out of many.
+Extremely useful for handling touches on, for example, Europe map, or an eye of owl,
 
 
 ## Screen Shots
 <img 
-src="https://raw.github.com/stkim1/MTImageMapView/master/screenshot/debug.png"
-alt="Debug screen" 
-title="Debug screen"
-style="display:block;">
-
-<img 
-src="https://raw.github.com/stkim1/MTImageMapView/master/screenshot/normal.png"
-alt="Normal screen" 
-title="Normal screen"
-style="display:block;">
+src="http://blog.colorfulglue.com/wp-content/uploads/2012/10/debug.png" alt="Debug screen" title="Debug screen" style="float:left;display:block;">
+<img src="http://blog.colorfulglue.com/wp-content/uploads/2012/10/normal.png" alt="Normal screen" title="Normal screen" style="float:left;display:block;margin-left:1em;">
+<!--img src="http://a1.mzstatic.com/us/r1000/085/Purple/v4/fe/12/1a/fe121a75-6750-4b12-78a4-49a7dba40d77/mzl.imsprsjs.320x480-75.jpg" alt="Example" title="Example" style="float:left;display:block;margin-left:1em;"-->
 
 
-## How to create an image map
-1. Use tools like [Gimp](http://www.gimp.org/) and generate map.
-2. Copy only coordinates (e.g. "123,242,452,242,142,322") and put them in an NSArray.
-3. Pass the array to map view.
+<br/><br/>
+
+## Features
+
+MTImageMapView is to detect a touch event on a designated part of an image.
+
+- Handling multiple maps on an image.<sup>1</sup> 
+- Multiple MTImageMapView on a single view.
+- Support Interface Builder, or progmatical initiation.
+- Batch mapping. <sup>2</sup> 
+- Completion block for notifying the end of mapping.<sup>3</sup> 
+- Delegate to provide selected map index
+- Single public class and protocol to implement.
+
+<ol>
+	<li>There is no limit but you need to be reasonable. In this example, I put around 50.</li>
+	<li>Mapping takes place in background and prevents UI animation from stuttering.</li>
+	<li>At the end of mapping, mapping function notifies on main thread.</li>
+</ol>
+
+## Support
+
+- Works on iOS 4.3 ~ iOS 6.0 (tested on devices.)
+- XCode 4.4 or higher required.
+
+### NOT supported
+- <sup>*</sup>ARC is NOT supported yet.
+- <sup>**</sup>Zoom in/out is NOT supported yet.
+
+## Implementation
+1. Use tools like [Gimp](http://www.gimp.org/) and generate image map.
+2. Copy only coordinate pairs of a map (e.g. "123,242,452,242,142,322") in NSString type.
+3. Put them in an NSArray.
+4. Implement MTImageMapDelegate procotol
+5. pass the array to map view.
+   (You can use .plist to contain such maps set and drop it into a MTImageMapView. )
+
+```objective-c
+    MTImageMapView *viewImageMap =\
+        [[MTImageMapView alloc]
+         initWithImage:
+            [UIImage imageNamed:@"sample_image.png"]
+         ];
+    
+    [_iewImageMap setDelegate:self];
+    [self.view addSubview:viewImageMap];
+    
+    NSArray *arrStates = \
+        [NSArray arrayWithContentsOfFile:
+         [[NSBundle mainBundle]
+          pathForResource:@"coordinates"
+          ofType:@"plist"]];
+
+    [viewImageMap
+     setMapping:arrStates
+     doneBlock:^(MTImageMapView *imageMapView) {
+         NSLog(@"Mapping complete!");
+     }];
+```
+
+```objective-c
+	-(void)imageMapView:(MTImageMapView *)inImageMapView
+	   didSelectMapArea:(NSUInteger)inIndexSelected
+	{
+	    [[[[UIAlertView alloc]
+	     initWithTitle:@"*** State Name ***"
+	     message:[stateNames objectAtIndex:inIndexSelected]
+	     delegate:nil
+	     cancelButtonTitle:@"Ok"
+	     otherButtonTitles:nil]
+	      autorelease] show];
+	}
+```
+### Limits
+- <sup>*</sup>Delegate only receives the index of a map.
+
 
 
 ## License
