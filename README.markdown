@@ -1,7 +1,7 @@
 # MTImageMapView
 
 An UIImageView subclass to select a complex polygon map out of many.<br/>
-Extremely useful for handling touches on, for example, Europe map, or an eye of owl,
+Extremely useful for handling touches on, for example, Europe map, or an eye of owl.
 
 
 ## Screen Shots
@@ -38,8 +38,8 @@ MTImageMapView is to detect a touch event on a designated part of an image.
 - XCode 4.4 or higher required.
 
 ### TBA
-- ARC is
-- Zoom in/out
+- ARC.
+- Zoom in/out.
 
 ## Implementation
 1. Use tools like [Gimp](http://www.gimp.org/) and generate image map.
