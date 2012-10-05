@@ -16,8 +16,6 @@ src="http://blog.colorfulglue.com/wp-content/uploads/2012/10/debug.png" alt="Deb
 
 ## Features
 
-MTImageMapView is to detect a touch event on a designated part of an image.
-
 - Handling multiple maps on an image.<sup>1</sup> 
 - Multiple MTImageMapView on a single view
 - Support Interface Builder, or progmatical initiation
@@ -25,7 +23,7 @@ MTImageMapView is to detect a touch event on a designated part of an image.
 - Completion block for notifying the end of mapping.<sup>3</sup> 
 - Delegate to provide selected map index
 - Single public class and protocol to implement
-- Debug mode to display map on image
+- Debug mode to superimpose maps on an image
 
 <ol>
 	<li>There is no limit but you need to be reasonable. In this example, I put around 50.</li>
@@ -45,8 +43,8 @@ MTImageMapView is to detect a touch event on a designated part of an image.
 ## Implementation
 1. Use tools like [Gimp](http://www.gimp.org/) and generate image map.
 2. Copy only coordinate pairs of a map (e.g. "123,242,452,242,142,322") in NSString type.
-3. Put them in an NSArray.
-4. Implement MTImageMapDelegate procotol
+3. Implement MTImageMapDelegate procotol
+4. Put them in an NSArray.
 5. pass the array to map view.
    (You can use .plist to contain such maps set and drop it into a MTImageMapView. )
 
@@ -88,12 +86,13 @@ MTImageMapView is to detect a touch event on a designated part of an image.
 ```
 ### LIMITS
 - Delegate only receives the index of a map.
-- At least 3 pairs of coordinate must be presented.
+- Coordinates must be provided in pairs.
+- At least 3 pairs of coordinates must be presented.
 - No "rect", "circle" type map is supported. "Polygon" only at this time being.
 
 
 ## Credits
-US states images and all coordinates are credited to <a href="http://html.cita.illinois.edu/text/map/map-example.php">Illinois Center for Information Technology and Web Accessibility.</a>
+US states image and all coordinates are credited to [Illinois Center for Information Technology and Web Accessibility](http://html.cita.illinois.edu/text/map/map-example.php).</a>
 
 ## License
 Copyright © 2012, Sung-Taek, Kim. All rights reserved.
