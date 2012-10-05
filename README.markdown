@@ -19,12 +19,13 @@ src="http://blog.colorfulglue.com/wp-content/uploads/2012/10/debug.png" alt="Deb
 MTImageMapView is to detect a touch event on a designated part of an image.
 
 - Handling multiple maps on an image.<sup>1</sup> 
-- Multiple MTImageMapView on a single view.
-- Support Interface Builder, or progmatical initiation.
+- Multiple MTImageMapView on a single view
+- Support Interface Builder, or progmatical initiation
 - Batch mapping. <sup>2</sup> 
 - Completion block for notifying the end of mapping.<sup>3</sup> 
 - Delegate to provide selected map index
-- Single public class and protocol to implement.
+- Single public class and protocol to implement
+- Debug mode to display map on image
 
 <ol>
 	<li>There is no limit but you need to be reasonable. In this example, I put around 50.</li>
@@ -55,8 +56,8 @@ MTImageMapView is to detect a touch event on a designated part of an image.
          initWithImage:
             [UIImage imageNamed:@"sample_image.png"]
          ];
-    
-    [_iewImageMap setDelegate:self];
+
+    [viewImageMap setDelegate:self];
     [self.view addSubview:viewImageMap];
     
     NSArray *arrStates = \
