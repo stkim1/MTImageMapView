@@ -92,6 +92,9 @@ MTImageMapView is to detect a touch event on a designated part of an image.
 - No "rect", "circle" type map is supported. "Polygon" only at this time being.
 
 
+## Credits
+US states images and all coordinates are credited to <a href="http://html.cita.illinois.edu/text/map/map-example.php">Illinois Center for Information Technology and Web Accessibility.</a>
+
 ## License
 Copyright © 2012, Sung-Taek, Kim. All rights reserved.
 
