@@ -1,6 +1,6 @@
 # MTImageMapView
 
-An UIImageView subclass to select a complex polygon map out of many.
+An UIImageView subclass to select a complex polygon map out of many.<br/>
 Extremely useful for handling touches on, for example, Europe map, or an eye of owl,
 
 
@@ -8,10 +8,11 @@ Extremely useful for handling touches on, for example, Europe map, or an eye of 
 <img 
 src="http://blog.colorfulglue.com/wp-content/uploads/2012/10/debug.png" alt="Debug screen" title="Debug screen" style="float:left;display:block;">
 <img src="http://blog.colorfulglue.com/wp-content/uploads/2012/10/normal.png" alt="Normal screen" title="Normal screen" style="float:left;display:block;margin-left:1em;">
-<!--img src="http://a1.mzstatic.com/us/r1000/085/Purple/v4/fe/12/1a/fe121a75-6750-4b12-78a4-49a7dba40d77/mzl.imsprsjs.320x480-75.jpg" alt="Example" title="Example" style="float:left;display:block;margin-left:1em;"-->
+<br/>
 
-
-<br/><br/>
+### Appstore Example
+<img src="http://a1.mzstatic.com/us/r1000/085/Purple/v4/fe/12/1a/fe121a75-6750-4b12-78a4-49a7dba40d77/mzl.imsprsjs.320x480-75.jpg" alt="Example" title="Example" style="float:left;display:block;margin-left:1em;">
+<br/>
 
 ## Features
 
@@ -36,9 +37,9 @@ MTImageMapView is to detect a touch event on a designated part of an image.
 - Works on iOS 4.3 ~ iOS 6.0 (tested on devices.)
 - XCode 4.4 or higher required.
 
-### NOT supported
-- <sup>*</sup>ARC is NOT supported yet.
-- <sup>**</sup>Zoom in/out is NOT supported yet.
+### TBA
+- ARC is
+- Zoom in/out
 
 ## Implementation
 1. Use tools like [Gimp](http://www.gimp.org/) and generate image map.
@@ -84,15 +85,14 @@ MTImageMapView is to detect a touch event on a designated part of an image.
 	      autorelease] show];
 	}
 ```
-### Limits
-- <sup>*</sup>Delegate only receives the index of a map.
-
+### LIMITS
+- Delegate only receives the index of a map.
+- At least 3 pairs of coordinate must be presented.
+- No "rect", "circle" type map is supported. "Polygon" only at this time being.
 
 
 ## License
 Copyright © 2012, Sung-Taek, Kim. All rights reserved.
-
-<hr>
 
 Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
 
