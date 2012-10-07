@@ -59,10 +59,11 @@ src="http://blog.colorfulglue.com/wp-content/uploads/2012/10/debug.png" alt="Deb
     [self.view addSubview:viewImageMap];
     
     NSArray *arrStates = \
-        [NSArray arrayWithContentsOfFile:
-         [[NSBundle mainBundle]
-          pathForResource:@"coordinates"
-          ofType:@"plist"]];
+        [NSArray arrayWithObjects:
+         @"542,94,568,94,568,111,542,111"
+         @"555,150,574,150,574,161,555,161"
+         @"535,149,551,149,551,159,535,159"
+         ,nil];
 
     [viewImageMap
      setMapping:arrStates
