@@ -10,10 +10,6 @@ src="http://blog.colorfulglue.com/wp-content/uploads/2012/10/debug.png" alt="Deb
 <img src="http://blog.colorfulglue.com/wp-content/uploads/2012/10/normal.png" alt="Normal screen" title="Normal screen" style="float:left;display:block;margin-left:1em;">
 <br/>
 
-### Appstore Example
-<img src="http://a1.mzstatic.com/us/r1000/085/Purple/v4/fe/12/1a/fe121a75-6750-4b12-78a4-49a7dba40d77/mzl.imsprsjs.320x480-75.jpg" alt="Example" title="Example" style="float:left;display:block;margin-left:1em;">
-<br/>
-
 ## Features
 
 - Handling multiple maps on an image.<sup>1</sup> 
@@ -41,10 +37,10 @@ src="http://blog.colorfulglue.com/wp-content/uploads/2012/10/debug.png" alt="Deb
 - Zoom in/out.
 
 ## Implementation
-1. Use tools like [Gimp](http://www.gimp.org/) and generate image map.
-2. Copy only coordinate pairs of a map (e.g. "123,242,452,242,142,322") in NSString type.
-3. Implement MTImageMapDelegate procotol
-4. Put them in an NSArray.
+1. Use tools like [Gimp](http://www.gimp.org/) and generate a image map.
+2. Copy only coordinate pairs of the map (e.g. "123,242,452,242,142,322") in NSString type.
+3. Put them in an NSArray.
+4. Implement MTImageMapDelegate procotol
 5. pass the array to map view.
    (You can use .plist to contain such maps set and drop it into a MTImageMapView. )
 
