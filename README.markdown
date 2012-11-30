@@ -6,8 +6,8 @@ Extremely useful for handling touches on, for example, Europe map, or an eye of 
 
 ## Screen Shots
 <img 
-src="http://blog.colorfulglue.com/wp-content/uploads/2012/10/debug.png" alt="Debug screen" title="Debug screen" style="float:left;display:block;">
-<img src="http://blog.colorfulglue.com/wp-content/uploads/2012/10/normal.png" alt="Normal screen" title="Normal screen" style="float:left;display:block;margin-left:1em;">
+src="http://farm9.staticflickr.com/8484/8230660409_79df1af06b.jpg" alt="Debug screen" title="Debug screen" style="float:left;display:block;">
+<img src="http://farm9.staticflickr.com/8342/8231732162_28bb9033a8.jpg" alt="Normal screen" title="Normal screen" style="float:left;display:block;margin-left:1em;">
 <br/>
 
 ## Features
@@ -33,16 +33,16 @@ src="http://blog.colorfulglue.com/wp-content/uploads/2012/10/debug.png" alt="Deb
 - XCode 4.4 or higher required.
 
 ### TBA
-- ARC.
+- ~~ARC.~~ 
 - Zoom in/out.
 
 ## Implementation
 1. Use tools like [Gimp](http://www.gimp.org/) and generate a image map.
 2. Copy only coordinate pairs of the map (e.g. "123,242,452,242,142,322") in NSString type.
-3. Put them in an NSArray.
-4. Implement MTImageMapDelegate procotol
-5. pass the array to map view.
-   (You can use .plist to contain such maps set and drop it into a MTImageMapView. )
+3. Put the strings in an NSArray.
+4. Instantiate MTImageMapView and implement MTImageMapDelegate procotol
+5. pass the array to the map view.
+   (You can use .plist to pass a map batch to a MTImageMapView. )
 
 ```objective-c
     MTImageMapView *viewImageMap =\
@@ -86,7 +86,7 @@ src="http://blog.colorfulglue.com/wp-content/uploads/2012/10/debug.png" alt="Deb
 - Coordinates must be provided in pairs.
 - At least 3 pairs of coordinates must be presented.
 - No "rect", "circle" type map is supported. "Polygon" only at this time being.
-
+- Starting from iOS 6.0, dispatch objects are Object-C objects, meaning when you are to go with ARC, dispatch objects too are managed by ARC. For backward compatibility issue, I do not support ARC at this point. You can read more detail at [Does ARC support dispatch queues?](http://stackoverflow.com/questions/8618632/does-arc-support-dispatch-queues)
 
 ## Credits
 US states image and all coordinates are credited to [Illinois Center for Information Technology and Web Accessibility](http://html.cita.illinois.edu/text/map/map-example.php).</a>
