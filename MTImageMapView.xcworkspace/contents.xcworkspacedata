@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Workspace
+   version = "1.0">
+   <FileRef
+      location = "group:Image Map (ARC)/Image Map (ARC).xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:Image Map (MRC)/Image Map (MRC).xcodeproj">
+   </FileRef>
+</Workspace>

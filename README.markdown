@@ -29,12 +29,10 @@ src="http://farm9.staticflickr.com/8484/8230660409_79df1af06b.jpg" alt="Debug sc
 
 ## Support
 
-- Works on iOS 4.3 ~ iOS 6.0 (tested on devices.)
 - XCode 4.4 or higher required.
-
-### TBA
-- ~~ARC.~~ 
-- Zoom in/out.
+- Works on iOS 4.3 ~ iOS 6.0 ARC/MRC (tested on devices.)
+- Starting from iOS 6.0, dispatch objects are Object-C objects, meaning when you are to go with ARC, dispatch objects too are managed by ARC. You can read more detail at [Does ARC support dispatch queues?](http://stackoverflow.com/questions/8618632/does-arc-support-dispatch-queues) <br/>
+ This paricular issue is solved with <code>OS_OBJECT_USE_OBJC</code> flag. You can read more in detail at [OMG, GCD+ARC](http://www.cocoanetics.com/2013/01/omg-gcdarc/)
 
 ## Implementation
 1. Use tools like [Gimp](http://www.gimp.org/) and generate a image map.
@@ -86,18 +84,35 @@ src="http://farm9.staticflickr.com/8484/8230660409_79df1af06b.jpg" alt="Debug sc
 - Coordinates must be provided in pairs.
 - At least 3 pairs of coordinates must be presented.
 - No "rect", "circle" type map is supported. "Polygon" only at this time being.
-- Starting from iOS 6.0, dispatch objects are Object-C objects, meaning when you are to go with ARC, dispatch objects too are managed by ARC. For backward compatibility issue, I do not support ARC at this point. You can read more detail at [Does ARC support dispatch queues?](http://stackoverflow.com/questions/8618632/does-arc-support-dispatch-queues)
 
 ## Credits
 US states image and all coordinates are credited to [Illinois Center for Information Technology and Web Accessibility](http://html.cita.illinois.edu/text/map/map-example.php).</a>
 
 ## License
-Copyright © 2012, Sung-Taek, Kim. All rights reserved.
+<pre>BSD license follows (http://www.opensource.org/licenses/bsd-license.php)
 
-Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
+Copyright © 2012-2013 Sung-Taek, Kim <stkim1@colorfulglue.com> All Rights Reserved.
 
-<pre><code>* Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
-* Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.
-</code></pre>
+Redistribution and use in source and binary forms, with or without modification,
+are permitted provided that the following conditions are met:
 
-THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+Redistributions of  source code  must retain  the above  copyright notice,
+this list of  conditions and the following  disclaimer. Redistributions in
+binary  form must  reproduce  the  above copyright  notice,  this list  of
+conditions and the following disclaimer  in the documentation and/or other
+materials  provided with  the distribution.  Neither the  name of  Sung-Ta
+ek kim nor the names of its contributors may be used to endorse or promote
+products  derived  from  this  software  without  specific  prior  written
+permission.  THIS  SOFTWARE  IS  PROVIDED BY  THE  COPYRIGHT  HOLDERS  AND
+CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT
+NOT LIMITED TO, THE IMPLIED  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+A  PARTICULAR PURPOSE  ARE DISCLAIMED.  IN  NO EVENT  SHALL THE  COPYRIGHT
+HOLDER OR  CONTRIBUTORS BE  LIABLE FOR  ANY DIRECT,  INDIRECT, INCIDENTAL,
+SPECIAL, EXEMPLARY,  OR CONSEQUENTIAL DAMAGES (INCLUDING,  BUT NOT LIMITED
+TO, PROCUREMENT  OF SUBSTITUTE GOODS  OR SERVICES;  LOSS OF USE,  DATA, OR
+PROFITS; OR  BUSINESS INTERRUPTION)  HOWEVER CAUSED AND  ON ANY  THEORY OF
+LIABILITY,  WHETHER  IN CONTRACT,  STRICT  LIABILITY,  OR TORT  (INCLUDING
+NEGLIGENCE  OR OTHERWISE)  ARISING  IN ANY  WAY  OUT OF  THE  USE OF  THIS
+SOFTWARE,   EVEN  IF   ADVISED  OF   THE  POSSIBILITY   OF  SUCH   DAMAGE.</pre>
+_VER_ : 1.1<br/>
+_UPDATED_ : Jan. 22, 2013

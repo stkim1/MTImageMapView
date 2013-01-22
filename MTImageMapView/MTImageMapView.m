@@ -1,27 +1,55 @@
-//
-//  MTImageMapView.m
-//  ImageMap
-//
-//  Created by Almighty Kim on 9/29/12.
-//  Copyright (c) 2012 Colorful Glue. All rights reserved.
-//
+/*
+ *
+ * BSD license follows (http://www.opensource.org/licenses/bsd-license.php)
+ *
+ * Copyright (c) 2012-2013 Sung-Taek, Kim <stkim1@colorfulglue.com> All Rights Reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without modification,
+ * are permitted provided that the following conditions are met:
+ *
+ * Redistributions of  source code  must retain  the above  copyright notice,
+ * this list of  conditions and the following  disclaimer. Redistributions in
+ * binary  form must  reproduce  the  above copyright  notice,  this list  of
+ * conditions and the following disclaimer  in the documentation and/or other
+ * materials  provided with  the distribution.  Neither the  name of  Sung-Ta
+ * ek kim nor the names of its contributors may be used to endorse or promote
+ * products  derived  from  this  software  without  specific  prior  written
+ * permission.  THIS  SOFTWARE  IS  PROVIDED BY  THE  COPYRIGHT  HOLDERS  AND
+ * CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT
+ * NOT LIMITED TO, THE IMPLIED  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+ * A  PARTICULAR PURPOSE  ARE DISCLAIMED.  IN  NO EVENT  SHALL THE  COPYRIGHT
+ * HOLDER OR  CONTRIBUTORS BE  LIABLE FOR  ANY DIRECT,  INDIRECT, INCIDENTAL,
+ * SPECIAL, EXEMPLARY,  OR CONSEQUENTIAL DAMAGES (INCLUDING,  BUT NOT LIMITED
+ * TO, PROCUREMENT  OF SUBSTITUTE GOODS  OR SERVICES;  LOSS OF USE,  DATA, OR
+ * PROFITS; OR  BUSINESS INTERRUPTION)  HOWEVER CAUSED AND  ON ANY  THEORY OF
+ * LIABILITY,  WHETHER  IN CONTRACT,  STRICT  LIABILITY,  OR TORT  (INCLUDING
+ * NEGLIGENCE  OR OTHERWISE)  ARISING  IN ANY  WAY  OUT OF  THE  USE OF  THIS
+ * SOFTWARE,   EVEN  IF   ADVISED  OF   THE  POSSIBILITY   OF  SUCH   DAMAGE.
+ *
+ */
+
 
 #import "MTImageMapView.h"
 
 #pragma mark MACRO
-#pragma mark -
 
 #ifdef DEBUG
     #define MTLOG(args...)	NSLog(@"%@",[NSString stringWithFormat:args])
     #define MTASSERT(cond,desc...)	NSAssert(cond, @"%@", [NSString stringWithFormat: desc])
-    #define SAFE_DEALLOC_CHECK(__POINTER) { MTLOG(@"%@ dealloc",self); [super dealloc]; }
+	#if __has_feature(objc_arc)
+		#define SAFE_DEALLOC_CHECK(__POINTER) { MTLOG(@"%@ dealloc",self);}
+	#else
+		#define SAFE_DEALLOC_CHECK(__POINTER) { MTLOG(@"%@ dealloc",self); [super dealloc]; }
+	#endif
 #else
     #define MTLOG(args...)
-    #define MTASSERT(cond,desc...)
-    #define SAFE_DEALLOC_CHECK(__POINTER) { [super dealloc]; }
+    #define MTASSERT(cond,desc...) NSAssert(cond, @"%@", [NSString stringWithFormat: desc])
+	#if __has_feature(objc_arc)
+		#define SAFE_DEALLOC_CHECK(__POINTER)
+	#else
+		#define SAFE_DEALLOC_CHECK(__POINTER) { [super dealloc]; }
+	#endif
 #endif
-
-#define ASSURE_DEALLOC(__POINTER) { [__POINTER release]; __POINTER = nil; }
 
 #define IS_NULL_STRING(__POINTER) \
                         (__POINTER == nil || \
@@ -32,7 +60,6 @@
 
 
 #pragma mark - INTERFACES
-#pragma mark -
 
 #pragma  mark Debug View
 #ifdef DEBUG_MAP_AREA
@@ -57,7 +84,11 @@
 -(void)_performHitTestOnArea:(NSValue *)inTouchPoint;
 
 #ifdef DEBUG_MAP_AREA
-@property (nonatomic, assign) MTMapDebugView *viewDebugPath;
+	#if __has_feature(objc_arc)
+		@property (nonatomic, strong) MTMapDebugView *viewDebugPath;
+	#else
+		@property (nonatomic, retain) MTMapDebugView *viewDebugPath;
+	#endif
 #endif
 
 @end
@@ -68,7 +99,11 @@
 @implementation MTImageMapView
 {
     dispatch_semaphore_t	_concurrent_job_semaphore;
-    id<MTImageMapDelegate>  _delegate;
+#if __has_feature(objc_arc)
+	__unsafe_unretained id<MTImageMapDelegate>  _delegate;
+#else
+	id<MTImageMapDelegate>  _delegate;
+#endif
 }
 
 @synthesize mapAreas;
@@ -169,8 +204,10 @@
                      areaID:index];
 
                 [self.mapAreas addObject:anArea];
-                
+
+#if !__has_feature(objc_arc)
                 [anArea release];
+#endif
             }
             
             // notify semaphore for anothre job to kick in
@@ -187,6 +224,7 @@
             inBlockDone(self);
         });
     }
+
 #if !OS_OBJECT_USE_OBJC
 	dispatch_release(queue);
     dispatch_release(group);
@@ -218,11 +256,15 @@
     
 #ifdef DEBUG_MAP_AREA
     self.viewDebugPath = \
-    [[MTMapDebugView alloc]
-     initWithFrame:imageFrame];
+		[[MTMapDebugView alloc]
+		 initWithFrame:imageFrame];
     [self.viewDebugPath setBackgroundColor:[UIColor clearColor]];
     [self addSubview:self.viewDebugPath];
+
+#if !__has_feature(objc_arc)
     [self.viewDebugPath release];
+#endif
+
 #endif
 }
 
@@ -382,7 +424,9 @@
         [path closePath];
         
         self.mapArea = path;
+#if !__has_feature(objc_arc)
         [path release];
+#endif
     }
     return self;
 }
