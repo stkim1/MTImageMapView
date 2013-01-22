@@ -114,7 +114,10 @@
 #ifdef DEBUG_MAP_AREA
     self.viewDebugPath = nil;
 #endif
+
+#if !OS_OBJECT_USE_OBJC
     dispatch_release(_concurrent_job_semaphore);
+#endif
     self.mapAreas = nil;
     self.delegate = nil;
 
@@ -184,9 +187,10 @@
             inBlockDone(self);
         });
     }
-    
+#if !OS_OBJECT_USE_OBJC
 	dispatch_release(queue);
     dispatch_release(group);
+#endif
 }
 
 // private methods
