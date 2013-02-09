@@ -6,8 +6,8 @@ Extremely useful for handling touches on, for example, Europe map, or an eye of 
 
 ## Screen Shots
 <img 
-src="http://farm9.staticflickr.com/8484/8230660409_79df1af06b.jpg" alt="Debug screen" title="Debug screen" style="float:left;display:block;">
-<img src="http://farm9.staticflickr.com/8342/8231732162_28bb9033a8.jpg" alt="Normal screen" title="Normal screen" style="float:left;display:block;margin-left:1em;">
+src="http://stkim1.github.com/MTImageMapView/images/debug.jpeg" alt="Debug screen" title="Debug screen" style="float:left;display:block;">
+<img src="http://stkim1.github.com/MTImageMapView/images/release.jpeg" alt="Normal screen" title="Normal screen" style="float:left;display:block;margin-left:1em;">
 <br/>
 
 ## Features
