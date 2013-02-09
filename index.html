@@ -1,0 +1,171 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>MtImageMapView by stkim1</title>
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script src="javascripts/main.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
+  </head>
+  <body>
+
+      <header>
+        <h1>MtImageMapView</h1>
+        <p>An image view for complex polygon map</p>
+      </header>
+
+      <div id="banner">
+        <span id="logo"></span>
+
+        <a href="https://github.com/stkim1/MTImageMapView" class="button fork"><strong>View On GitHub</strong></a>
+        <div class="downloads">
+          <span>Downloads:</span>
+          <ul>
+            <li><a href="https://github.com/stkim1/MTImageMapView/zipball/master" class="button">ZIP</a></li>
+            <li><a href="https://github.com/stkim1/MTImageMapView/tarball/master" class="button">TAR</a></li>
+          </ul>
+        </div>
+      </div><!-- end banner -->
+
+    <div class="wrapper">
+      <nav>
+        <ul></ul>
+      </nav>
+      <section>
+        <h1>MTImageMapView</h1>
+
+<p>An UIImageView subclass to select a complex polygon map out of many.<br>
+Extremely useful for handling touches on, for example, Europe map, or an eye of owl.</p>
+
+<h2>Screen Shots</h2>
+
+<p><img src="http://farm9.staticflickr.com/8484/8230660409_79df1af06b.jpg" alt="Debug screen" title="Debug screen"><img src="http://farm9.staticflickr.com/8342/8231732162_28bb9033a8.jpg" alt="Normal screen" title="Normal screen"><br></p>
+
+<h2>Features</h2>
+
+<ul>
+<li>Handling multiple maps on an image.<sup>1</sup>
+</li>
+<li>Multiple MTImageMapView on a single view</li>
+<li>Support Interface Builder, or progmatical initiation</li>
+<li>Batch mapping. <sup>2</sup>
+</li>
+<li>Completion block for notifying the end of mapping.<sup>3</sup>
+</li>
+<li>Delegate to provide selected map index</li>
+<li>Single public class and protocol to implement</li>
+<li>Debug mode to superimpose maps on an image</li>
+</ul><ol>
+<li>There is no limit but you need to be reasonable. In this example, I put around 50.</li>
+    <li>Mapping takes place in background and prevents UI animation from stuttering.</li>
+    <li>At the end of mapping, mapping function notifies on main thread.</li>
+</ol><h2>Support</h2>
+
+<ul>
+<li>XCode 4.4 or higher required.</li>
+<li>Works on iOS 4.3 ~ iOS 6.0 ARC/MRC (tested on devices.)</li>
+<li>Starting from iOS 6.0, dispatch objects are Object-C objects, meaning when you are to go with ARC, dispatch objects too are managed by ARC. You can read more detail at <a href="http://stackoverflow.com/questions/8618632/does-arc-support-dispatch-queues">Does ARC support dispatch queues?</a> <br>
+This paricular issue is solved with <code>OS_OBJECT_USE_OBJC</code> flag. You can read more in detail at <a href="http://www.cocoanetics.com/2013/01/omg-gcdarc/">OMG, GCD+ARC</a>
+</li>
+</ul><h2>Implementation</h2>
+
+<ol>
+<li>Use tools like <a href="http://www.gimp.org/">Gimp</a> and generate a image map.</li>
+<li>Copy only coordinate pairs of the map (e.g. "123,242,452,242,142,322") in NSString type.</li>
+<li>Put the strings in an NSArray.</li>
+<li>Instantiate MTImageMapView and implement MTImageMapDelegate procotol</li>
+<li>pass the array to the map view.
+(You can use .plist to pass a map batch to a MTImageMapView. )</li>
+</ol><div class="highlight"><pre>    <span class="n">MTImageMapView</span> <span class="o">*</span><span class="n">viewImageMap</span> <span class="o">=</span>\
+        <span class="p">[[</span><span class="n">MTImageMapView</span> <span class="n">alloc</span><span class="p">]</span>
+         <span class="nl">initWithImage:</span>
+            <span class="p">[</span><span class="n">UIImage</span> <span class="nl">imageNamed:</span><span class="s">@"sample_image.png"</span><span class="p">]</span>
+         <span class="p">];</span>
+
+    <span class="p">[</span><span class="n">viewImageMap</span> <span class="nl">setDelegate:</span><span class="n">self</span><span class="p">];</span>
+    <span class="p">[</span><span class="n">self</span><span class="p">.</span><span class="n">view</span> <span class="nl">addSubview:</span><span class="n">viewImageMap</span><span class="p">];</span>
+
+    <span class="n">NSArray</span> <span class="o">*</span><span class="n">arrStates</span> <span class="o">=</span> \
+        <span class="p">[</span><span class="n">NSArray</span> <span class="nl">arrayWithObjects:</span>
+         <span class="s">@"542,94,568,94,568,111,542,111"</span>
+         <span class="s">@"555,150,574,150,574,161,555,161"</span>
+         <span class="s">@"535,149,551,149,551,159,535,159"</span>
+         <span class="p">,</span><span class="nb">nil</span><span class="p">];</span>
+
+    <span class="p">[</span><span class="n">viewImageMap</span>
+     <span class="nl">setMapping:</span><span class="n">arrStates</span>
+     <span class="nl">doneBlock:</span><span class="o">^</span><span class="p">(</span><span class="n">MTImageMapView</span> <span class="o">*</span><span class="n">imageMapView</span><span class="p">)</span> <span class="p">{</span>
+         <span class="n">NSLog</span><span class="p">(</span><span class="s">@"Mapping complete!"</span><span class="p">);</span>
+     <span class="p">}];</span>
+</pre></div>
+
+<div class="highlight"><pre>    <span class="o">-</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nl">imageMapView:</span><span class="p">(</span><span class="n">MTImageMapView</span> <span class="o">*</span><span class="p">)</span><span class="n">inImageMapView</span>
+       <span class="nl">didSelectMapArea:</span><span class="p">(</span><span class="n">NSUInteger</span><span class="p">)</span><span class="n">inIndexSelected</span>
+    <span class="p">{</span>
+        <span class="p">[[[[</span><span class="n">UIAlertView</span> <span class="n">alloc</span><span class="p">]</span>
+         <span class="nl">initWithTitle:</span><span class="s">@"*** State Name ***"</span>
+         <span class="nl">message:</span><span class="p">[</span><span class="n">stateNames</span> <span class="nl">objectAtIndex:</span><span class="n">inIndexSelected</span><span class="p">]</span>
+         <span class="nl">delegate:</span><span class="nb">nil</span>
+         <span class="nl">cancelButtonTitle:</span><span class="s">@"Ok"</span>
+         <span class="nl">otherButtonTitles:</span><span class="nb">nil</span><span class="p">]</span>
+          <span class="n">autorelease</span><span class="p">]</span> <span class="n">show</span><span class="p">];</span>
+    <span class="p">}</span>
+</pre></div>
+
+<h3>LIMITS</h3>
+
+<ul>
+<li>Delegate only receives the index of a map.</li>
+<li>Coordinates must be provided in pairs.</li>
+<li>At least 3 pairs of coordinates must be presented.</li>
+<li>No "rect", "circle" type map is supported. "Polygon" only at this time being.</li>
+</ul><h2>Credits</h2>
+
+<p>US states image and all coordinates are credited to <a href="http://html.cita.illinois.edu/text/map/map-example.php">Illinois Center for Information Technology and Web Accessibility</a>.</p>
+
+<h2>License</h2>
+
+<pre>BSD license follows (http://www.opensource.org/licenses/bsd-license.php)
+
+Copyright © 2012-2013 Sung-Taek, Kim  All Rights Reserved.
+
+Redistribution and use in source and binary forms, with or without modification,
+are permitted provided that the following conditions are met:
+
+Redistributions of  source code  must retain  the above  copyright notice,
+this list of  conditions and the following  disclaimer. Redistributions in
+binary  form must  reproduce  the  above copyright  notice,  this list  of
+conditions and the following disclaimer  in the documentation and/or other
+materials  provided with  the distribution.  Neither the  name of  Sung-Ta
+ek kim nor the names of its contributors may be used to endorse or promote
+products  derived  from  this  software  without  specific  prior  written
+permission.  THIS  SOFTWARE  IS  PROVIDED BY  THE  COPYRIGHT  HOLDERS  AND
+CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT
+NOT LIMITED TO, THE IMPLIED  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+A  PARTICULAR PURPOSE  ARE DISCLAIMED.  IN  NO EVENT  SHALL THE  COPYRIGHT
+HOLDER OR  CONTRIBUTORS BE  LIABLE FOR  ANY DIRECT,  INDIRECT, INCIDENTAL,
+SPECIAL, EXEMPLARY,  OR CONSEQUENTIAL DAMAGES (INCLUDING,  BUT NOT LIMITED
+TO, PROCUREMENT  OF SUBSTITUTE GOODS  OR SERVICES;  LOSS OF USE,  DATA, OR
+PROFITS; OR  BUSINESS INTERRUPTION)  HOWEVER CAUSED AND  ON ANY  THEORY OF
+LIABILITY,  WHETHER  IN CONTRACT,  STRICT  LIABILITY,  OR TORT  (INCLUDING
+NEGLIGENCE  OR OTHERWISE)  ARISING  IN ANY  WAY  OUT OF  THE  USE OF  THIS
+SOFTWARE,   EVEN  IF   ADVISED  OF   THE  POSSIBILITY   OF  SUCH   DAMAGE.</pre>
+
+<p><em>VER</em> : 1.1<br><em>UPDATED</em> : Jan. 22, 2013</p>
+      </section>
+      <footer>
+        <p>Project maintained by <a href="https://github.com/stkim1">stkim1</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="http://twitter.com/#!/michigangraham">mattgraham</a></small></p>
+      </footer>
+    </div>
+    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+    
+  </body>
+</html>
