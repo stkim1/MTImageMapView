@@ -88,6 +88,9 @@ src="http://stkim1.github.com/MTImageMapView/images/debug.jpeg" alt="Debug scree
 ## Credits
 US states image and all coordinates are credited to [Illinois Center for Information Technology and Web Accessibility](http://html.cita.illinois.edu/text/map/map-example.php).</a>
 
+## Question?
+Ask to [@stkim1](https://twitter.com/stkim1)
+
 ## License
 <pre>BSD license follows (http://www.opensource.org/licenses/bsd-license.php)
 
