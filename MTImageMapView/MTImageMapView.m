@@ -35,20 +35,15 @@
 
 #ifdef DEBUG
     #define MTLOG(args...)	NSLog(@"%@",[NSString stringWithFormat:args])
-    #define MTASSERT(cond,desc...)	NSAssert(cond, @"%@", [NSString stringWithFormat: desc])
-	#if __has_feature(objc_arc)
-		#define SAFE_DEALLOC_CHECK(__POINTER) { MTLOG(@"%@ dealloc",self);}
-	#else
-		#define SAFE_DEALLOC_CHECK(__POINTER) { MTLOG(@"%@ dealloc",self); [super dealloc]; }
-	#endif
 #else
     #define MTLOG(args...)
-    #define MTASSERT(cond,desc...) NSAssert(cond, @"%@", [NSString stringWithFormat: desc])
-	#if __has_feature(objc_arc)
-		#define SAFE_DEALLOC_CHECK(__POINTER)
-	#else
-		#define SAFE_DEALLOC_CHECK(__POINTER) { [super dealloc]; }
-	#endif
+#endif
+
+#define MTASSERT(cond,desc...) NSAssert(cond, @"%@", [NSString stringWithFormat: desc])
+#if __has_feature(objc_arc)
+    #define SAFE_DEALLOC_CHECK(__POINTER)
+#else
+    #define SAFE_DEALLOC_CHECK(__POINTER) {[super dealloc];}
 #endif
 
 #define IS_NULL_STRING(__POINTER) \
@@ -98,7 +93,6 @@
 #pragma mark Image Map View
 @implementation MTImageMapView
 {
-    dispatch_semaphore_t	_concurrent_job_semaphore;
 #if __has_feature(objc_arc)
 	__unsafe_unretained id<MTImageMapDelegate>  _delegate;
 #else
@@ -150,9 +144,6 @@
     self.viewDebugPath = nil;
 #endif
 
-#if !OS_OBJECT_USE_OBJC
-    dispatch_release(_concurrent_job_semaphore);
-#endif
     self.mapAreas = nil;
     self.delegate = nil;
 
@@ -171,30 +162,24 @@
     MTASSERT(inMappingArea != nil, @"mapping array cannot be nil");
     MTASSERT([inMappingArea count] != 0, @"mapping array should have element");
     
-    dispatch_queue_t queue = \
-        dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0);
+    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0);
     dispatch_group_t group = dispatch_group_create();
-    dispatch_queue_t main = dispatch_get_main_queue();
 
     NSUInteger countArea = [inMappingArea count];
     NSString* aStrArea = nil;
-    
-    self.mapAreas = nil;
-    self.mapAreas = [NSMutableArray arrayWithCapacity:countArea];
+
+    [self.mapAreas removeAllObjects];
     
 #ifdef DEBUG_MAP_AREA
     [self.viewDebugPath setMapAreasToDebug:[self mapAreas]];
 #endif
-
+    
+    __block typeof (self) belf = self;
     for(NSUInteger index = 0; index < countArea; index++)
     {
         aStrArea = [inMappingArea objectAtIndex:index];
         
         dispatch_group_async(group,queue,^{
-            
-            // wait in line...
-            dispatch_semaphore_wait(_concurrent_job_semaphore,
-                                    DISPATCH_TIME_FOREVER);
             
             @autoreleasepool {
                                 
@@ -203,28 +188,23 @@
                      initWithCoordinate:aStrArea
                      areaID:index];
 
-                [self.mapAreas addObject:anArea];
+                [[belf mapAreas] addObject:anArea];
 
 #if !__has_feature(objc_arc)
                 [anArea release];
 #endif
             }
             
-            // notify semaphore for anothre job to kick in
-            dispatch_semaphore_signal(_concurrent_job_semaphore);
-            
         });
     }
-
-    dispatch_group_wait(group, DISPATCH_TIME_FOREVER);
     
     if(inBlockDone != NULL)
     {
-        dispatch_group_async(group, main, ^{
-            inBlockDone(self);
+        dispatch_group_notify(group, dispatch_get_main_queue(), ^{
+            inBlockDone(belf);
         });
     }
-
+    
 #if !OS_OBJECT_USE_OBJC
 	dispatch_release(queue);
     dispatch_release(group);
@@ -248,9 +228,7 @@
     sizingOption &= sizingFilter;
     [self setAutoresizingMask:sizingOption];
     
-    int cpuCount = [[NSProcessInfo processInfo] processorCount];
-    _concurrent_job_semaphore = dispatch_semaphore_create(cpuCount);
-    
+    self.mapAreas = [NSMutableArray arrayWithCapacity:0];
     [self setUserInteractionEnabled:YES];
     [self setMultipleTouchEnabled:NO];
     
@@ -396,7 +374,7 @@
         
         // # of coordinate must be in even numbers.
         //http://stackoverflow.com/questions/160930/how-do-i-check-if-an-integer-is-even-or-odd
-        MTASSERT(!(countTotal % 2), @"total # of coordinates must be even. count %d",countCoord);
+        MTASSERT(!(countTotal % 2), @"total # of coordinates must be even. count %lu",(unsigned long)countCoord);
         MTASSERT((3 <= countCoord), @"At least, three dots to represent an area");
         
         // add points to bezier path
