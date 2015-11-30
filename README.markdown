@@ -7,11 +7,11 @@ Extremely useful for handling touches on, for example, Europe map, or an eye of 
 ## Screen Shots
 <img 
 src="http://stkim1.github.com/MTImageMapView/images/debug.jpeg" alt="Debug screen" title="Debug screen" style="float:left;display:block;">
-<img src="http://stkim1.github.com/MTImageMapView/images/release.jpeg" alt="Normal screen" title="Normal screen" style="float:left;display:block;margin-left:1em;">
+<img src="http://stkim1.github.com/MTImageMapView/images/release.jpeg" alt="Normal screen" title="Normal screen" style="float:left;display:block;margin-left:1em;">  
 
-<br/><br/>
+## Youtube Demo  
 
-<iframe width="420" height="315" src="https://www.youtube.com/embed/Fnnz6DiGBb0" frameborder="0" allowfullscreen></iframe>
+[![MTImageMapView Demo](http://img.youtube.com/vi/Fnnz6DiGBb0/0.jpg)](https://www.youtube.com/watch?v= Fnnz6DiGBb0&vq=hd720)  
 
 ## Features
 
