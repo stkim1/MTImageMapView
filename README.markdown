@@ -11,7 +11,7 @@ src="http://stkim1.github.com/MTImageMapView/images/debug.jpeg" alt="Debug scree
 
 ## Youtube Demo  
 
-[![MTImageMapView Demo](http://img.youtube.com/vi/Fnnz6DiGBb0/1.jpg)](https://www.youtube.com/watch?v=Fnnz6DiGBb0&vq=hd720)  
+[![MTImageMapView Demo](http://img.youtube.com/vi/Fnnz6DiGBb0/0.jpg)](https://www.youtube.com/watch?v=Fnnz6DiGBb0&vq=hd720)  
 
 ## Features
 
