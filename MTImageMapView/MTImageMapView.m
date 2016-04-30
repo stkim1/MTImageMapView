@@ -74,7 +74,7 @@
 
 #pragma mark Image Map View
 @interface MTImageMapView()
-@property (atomic, retain) NSMutableArray *mapAreas;
+@property (atomic, strong) NSMutableArray *mapAreas;
 -(void)_finishConstructionWithImage:(UIImage *)inImage;
 -(void)_performHitTestOnArea:(NSValue *)inTouchPoint;
 
@@ -112,6 +112,7 @@
     self = [super initWithImage:image];
     if(self)
     {
+        self.mapAreas = [NSMutableArray arrayWithCapacity:0];
         [self _finishConstructionWithImage:image];
     }
     return self;
@@ -122,6 +123,7 @@
     self = [super initWithImage:image highlightedImage:highlightedImage];
     if(self)
     {
+        self.mapAreas = [NSMutableArray arrayWithCapacity:0];
         [self _finishConstructionWithImage:image];
     }
     return self;
@@ -132,11 +134,11 @@
     self = [super initWithCoder:aDecoder];
     if(self)
     {
+        self.mapAreas = [NSMutableArray arrayWithCapacity:0];
         [self _finishConstructionWithImage:self.image];
     }
     return self;
 }
-
 
 -(void)dealloc
 {
@@ -227,8 +229,6 @@
      UIViewAutoresizingFlexibleHeight) ^ (NSUInteger)(-1);
     sizingOption &= sizingFilter;
     [self setAutoresizingMask:sizingOption];
-    
-    self.mapAreas = [NSMutableArray arrayWithCapacity:0];
     [self setUserInteractionEnabled:YES];
     [self setMultipleTouchEnabled:NO];
     
