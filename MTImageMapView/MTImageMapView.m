@@ -68,6 +68,7 @@
 @interface MTMapArea : NSObject
 @property (nonatomic, retain)   UIBezierPath        *mapArea;
 @property (nonatomic, readonly) NSUInteger          areaID;
+@property (nonatomic) CGPoint          centrePoint;
 -(id)initWithCoordinate:(NSString*)inStrCoordinate areaID:(NSInteger)inAreaID;
 -(BOOL)isAreaSelected:(CGPoint)inPointTouch;
 @end
@@ -261,11 +262,11 @@
                && [_delegate conformsToProtocol:@protocol(MTImageMapDelegate)]
                && [_delegate
                    respondsToSelector:
-                   @selector(imageMapView:didSelectMapArea:)])
+                   @selector(imageMapView:didSelectMapArea: areaCentrePoint :)])
             {
                 [_delegate
                  imageMapView:self
-                 didSelectMapArea:anArea.areaID];
+                 didSelectMapArea:anArea.areaID areaCentrePoint : anArea.centrePoint];
             }
             break;
         }
@@ -348,9 +349,11 @@
 {
     UIBezierPath        *_mapArea;
     NSUInteger          _areaID;
+    CGPoint             _centrePoint;
 }
 @synthesize mapArea         = _mapArea;
 @synthesize areaID          = _areaID;
+@synthesize centrePoint     = _centrePoint;
 
 -(id)initWithCoordinate:(NSString*)inStrCoordinate areaID:(NSInteger)inAreaID
 {
@@ -380,6 +383,15 @@
         // add points to bezier path
         UIBezierPath  *path         = [UIBezierPath new];
         
+        double minX  = [[arrAreaCoordinates
+                         objectAtIndex:0] doubleValue];
+        double maxX = [[arrAreaCoordinates
+                        objectAtIndex:0] doubleValue];
+        double minY  = [[arrAreaCoordinates
+                         objectAtIndex:1] doubleValue];
+        double maxY = [[arrAreaCoordinates
+                        objectAtIndex:1] doubleValue];
+        
         for(NSUInteger i = 0; i < countCoord; i++)
         {
             NSUInteger index = i<<1;
@@ -395,13 +407,29 @@
                 isFirstPoint = NO;
             }
             
+            if(aPoint.x < minX){
+                minX = aPoint.x;
+            }else if(aPoint.x > maxX){
+                maxX = aPoint.x;
+            }
+            
+            if(aPoint.y < minY){
+                minY = aPoint.y;
+            }else if(aPoint.y > maxY){
+                maxY = aPoint.y;
+            }
+            
             [path addLineToPoint:aPoint];
             
         }
         
         [path closePath];
         
+        double cx = minX + (maxX - minX)/2.0;
+        double cy = minY + (maxY - minY)/2.0;
+        
         self.mapArea = path;
+        self.centrePoint = CGPointMake(cx,cy);
 #if !__has_feature(objc_arc)
         [path release];
 #endif

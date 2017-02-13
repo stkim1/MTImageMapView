@@ -90,7 +90,7 @@
 }
 
 -(void)imageMapView:(MTImageMapView *)inImageMapView
-   didSelectMapArea:(NSUInteger)inIndexSelected
+   didSelectMapArea:(NSUInteger)inIndexSelected areaCentrePoint:(CGPoint)point
 {
     [[[UIAlertView alloc]
      initWithTitle:@"*** State Name ***"
