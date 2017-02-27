@@ -3,7 +3,6 @@
 An UIImageView subclass to select a complex polygon map out of many.<br/>
 Extremely useful for handling touches on, for example, Europe map, or an eye of owl.
 
-
 ## Screen Shots
 <img 
 src="http://stkim1.github.com/MTImageMapView/images/debug.jpeg" alt="Debug screen" title="Debug screen" style="float:left;display:block;">
@@ -72,6 +71,7 @@ src="http://stkim1.github.com/MTImageMapView/images/debug.jpeg" alt="Debug scree
 ```objective-c
 	-(void)imageMapView:(MTImageMapView *)inImageMapView
 	   didSelectMapArea:(NSUInteger)inIndexSelected
+	    areaCentrePoint:(CGPoint)point
 	{
 	    [[[[UIAlertView alloc]
 	     initWithTitle:@"*** State Name ***"
@@ -89,7 +89,8 @@ src="http://stkim1.github.com/MTImageMapView/images/debug.jpeg" alt="Debug scree
 - No "rect", "circle" type map is supported. "Polygon" only at this time being.
 
 ## Credits
-US states image and all coordinates are credited to [Illinois Center for Information Technology and Web Accessibility](http://html.cita.illinois.edu/text/map/map-example.php).</a>
+- US states image and all coordinates are credited to [Illinois Center for Information Technology and Web Accessibility](http://html.cita.illinois.edu/text/map/map-example.php).</a>
+- [The center point of a selected area](https://github.com/stkim1/MTImageMapView/pull/5) by [@RajnishTomar](https://github.com/RajnishTomar)
 
 ## Question?
 Ask to [@stkim1](https://twitter.com/stkim1)
@@ -97,7 +98,7 @@ Ask to [@stkim1](https://twitter.com/stkim1)
 ## License
 <pre>BSD license follows (http://www.opensource.org/licenses/bsd-license.php)
 
-Copyright © 2012-2013 Sung-Taek, Kim <stkim1@colorfulglue.com> All Rights Reserved.
+Copyright © 2012-2017 Sung-Taek, Kim All Rights Reserved.
 
 Redistribution and use in source and binary forms, with or without modification,
 are permitted provided that the following conditions are met:
@@ -121,4 +122,4 @@ LIABILITY,  WHETHER  IN CONTRACT,  STRICT  LIABILITY,  OR TORT  (INCLUDING
 NEGLIGENCE  OR OTHERWISE)  ARISING  IN ANY  WAY  OUT OF  THE  USE OF  THIS
 SOFTWARE,   EVEN  IF   ADVISED  OF   THE  POSSIBILITY   OF  SUCH   DAMAGE.</pre>
 _VER_ : 1.1<br/>
-_UPDATED_ : Jan. 22, 2013
+_UPDATED_ : Feb. 28, 2017

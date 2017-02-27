@@ -2,7 +2,7 @@
  *
  * BSD license follows (http://www.opensource.org/licenses/bsd-license.php)
  *
- * Copyright (c) 2012-2013 Sung-Taek, Kim <stkim1@colorfulglue.com> All Rights Reserved.
+ * Copyright (c) 2012-2017 Sung-Taek, Kim All Rights Reserved.
  *
  * Redistribution and use in source and binary forms, with or without modification,
  * are permitted provided that the following conditions are met:
@@ -37,7 +37,8 @@
 
 @protocol MTImageMapDelegate <NSObject>
 -(void)imageMapView:(MTImageMapView *)inImageMapView
-   didSelectMapArea:(NSUInteger)inIndexSelected areaCentrePoint:(CGPoint)point ;
+   didSelectMapArea:(NSUInteger)inIndexSelected
+    areaCentrePoint:(CGPoint)point;
 @end
 
 @interface MTImageMapView : UIImageView
