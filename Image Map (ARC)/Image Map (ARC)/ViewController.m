@@ -2,7 +2,7 @@
  *
  * BSD license follows (http://www.opensource.org/licenses/bsd-license.php)
  *
- * Copyright (c) 2012-2013 Sung-Taek, Kim <stkim1@colorfulglue.com> All Rights Reserved.
+ * Copyright (c) 2012-2017 Sung-Taek, Kim All Rights Reserved.
  *
  * Redistribution and use in source and binary forms, with or without modification,
  * are permitted provided that the following conditions are met:
@@ -33,21 +33,21 @@
 
 @implementation ViewController
 {
-    __unsafe_unretained UIScrollView         *_viewScrollStub;
-    __unsafe_unretained MTImageMapView       *_viewImageMap;
-    __strong			NSArray              *_stateNames;
+    __unsafe_unretained UIScrollView    *_viewScrollStub;
+    __unsafe_unretained MTImageMapView  *_viewImageMap;
+    __strong			NSArray         *_stateNames;
 }
-@synthesize viewScrollStub  = _viewScrollStub;
-@synthesize viewImageMap    = _viewImageMap;
-@synthesize stateNames      = _stateNames;
+@synthesize viewScrollStub = _viewScrollStub;
+@synthesize viewImageMap = _viewImageMap;
+@synthesize stateNames = _stateNames;
 
 -(NSString *)nibName
 {
-    if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
     {
         CGSize result = [[UIScreen mainScreen] bounds].size;
         
-        if(result.height == 480.f)
+        if (result.height == 480.f)
         {
             return @"ViewController";
         }
@@ -90,7 +90,8 @@
 }
 
 -(void)imageMapView:(MTImageMapView *)inImageMapView
-   didSelectMapArea:(NSUInteger)inIndexSelected areaCentrePoint:(CGPoint)point
+   didSelectMapArea:(NSUInteger)inIndexSelected
+    areaCentrePoint:(CGPoint)point
 {
     [[[UIAlertView alloc]
      initWithTitle:@"*** State Name ***"

@@ -2,7 +2,7 @@
  *
  * BSD license follows (http://www.opensource.org/licenses/bsd-license.php)
  *
- * Copyright (c) 2012-2013 Sung-Taek, Kim <stkim1@colorfulglue.com> All Rights Reserved.
+ * Copyright (c) 2012-2017 Sung-Taek, Kim All Rights Reserved.
  *
  * Redistribution and use in source and binary forms, with or without modification,
  * are permitted provided that the following conditions are met:
@@ -34,7 +34,7 @@
 #pragma mark MACRO
 
 #ifdef DEBUG
-    #define MTLOG(args...)	NSLog(@"%@",[NSString stringWithFormat:args])
+    #define MTLOG(args...) NSLog(@"%@",[NSString stringWithFormat:args])
 #else
     #define MTLOG(args...)
 #endif
@@ -55,20 +55,20 @@
 
 
 #pragma mark - INTERFACES
-
+#pragma mark -
 #pragma  mark Debug View
 #ifdef DEBUG_MAP_AREA
-@interface MTMapDebugView : UIView
+@interface MTMapDebugView: UIView
 @property (nonatomic, assign) NSMutableArray *mapAreasToDebug;
-@property (nonatomic)   CGPoint aTouchPoint;
+@property (nonatomic)         CGPoint        aTouchPoint;
 @end
 #endif
 
 #pragma mark Map Area Model
 @interface MTMapArea : NSObject
-@property (nonatomic, retain)   UIBezierPath        *mapArea;
-@property (nonatomic, readonly) NSUInteger          areaID;
-@property (nonatomic) CGPoint          centrePoint;
+@property (nonatomic, retain)   UIBezierPath *mapArea;
+@property (nonatomic, readonly) NSUInteger   areaID;
+@property (nonatomic)           CGPoint      centrePoint;
 -(id)initWithCoordinate:(NSString*)inStrCoordinate areaID:(NSInteger)inAreaID;
 -(BOOL)isAreaSelected:(CGPoint)inPointTouch;
 @end
@@ -111,7 +111,7 @@
 -(id)initWithImage:(UIImage *)image
 {
     self = [super initWithImage:image];
-    if(self)
+    if ( self != nil)
     {
         self.mapAreas = [NSMutableArray arrayWithCapacity:0];
         [self _finishConstructionWithImage:image];
@@ -122,7 +122,7 @@
 -(id)initWithImage:(UIImage *)image highlightedImage:(UIImage *)highlightedImage
 {
     self = [super initWithImage:image highlightedImage:highlightedImage];
-    if(self)
+    if (self != nil)
     {
         self.mapAreas = [NSMutableArray arrayWithCapacity:0];
         [self _finishConstructionWithImage:image];
@@ -133,7 +133,7 @@
 -(id)initWithCoder:(NSCoder *)aDecoder
 {
     self = [super initWithCoder:aDecoder];
-    if(self)
+    if (self != nil)
     {
         self.mapAreas = [NSMutableArray arrayWithCapacity:0];
         [self _finishConstructionWithImage:self.image];
@@ -146,7 +146,6 @@
 #ifdef DEBUG_MAP_AREA
     self.viewDebugPath = nil;
 #endif
-
     self.mapAreas = nil;
     self.delegate = nil;
 
@@ -167,41 +166,34 @@
     
     dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0);
     dispatch_group_t group = dispatch_group_create();
-
     NSUInteger countArea = [inMappingArea count];
     NSString* aStrArea = nil;
 
     [self.mapAreas removeAllObjects];
-    
 #ifdef DEBUG_MAP_AREA
     [self.viewDebugPath setMapAreasToDebug:[self mapAreas]];
 #endif
     
     __block typeof (self) belf = self;
-    for(NSUInteger index = 0; index < countArea; index++)
+    for (NSUInteger index = 0; index < countArea; index++)
     {
         aStrArea = [inMappingArea objectAtIndex:index];
-        
+
         dispatch_group_async(group,queue,^{
-            
             @autoreleasepool {
-                                
                 MTMapArea* anArea = \
                     [[MTMapArea alloc]
                      initWithCoordinate:aStrArea
                      areaID:index];
-
                 [[belf mapAreas] addObject:anArea];
-
 #if !__has_feature(objc_arc)
                 [anArea release];
 #endif
             }
-            
         });
     }
     
-    if(inBlockDone != NULL)
+    if (inBlockDone != NULL)
     {
         dispatch_group_notify(group, dispatch_get_main_queue(), ^{
             inBlockDone(belf);
@@ -226,8 +218,8 @@
     //do not change width or height by aytoresizing
     UIViewAutoresizing sizingOption = [self autoresizingMask];
     UIViewAutoresizing sizingFilter = \
-    (UIViewAutoresizingFlexibleWidth |
-     UIViewAutoresizingFlexibleHeight) ^ (NSUInteger)(-1);
+        (UIViewAutoresizingFlexibleWidth |
+         UIViewAutoresizingFlexibleHeight) ^ (NSUInteger)(-1);
     sizingOption &= sizingFilter;
     [self setAutoresizingMask:sizingOption];
     [self setUserInteractionEnabled:YES];
@@ -251,22 +243,23 @@
 {
     MTASSERT(inTouchPoint != nil, @"touch point is null");
     
-    CGPoint     aTouchPoint     = [inTouchPoint CGPointValue];
-    NSArray*    areaArray       = [self mapAreas];
+    CGPoint aTouchPoint = [inTouchPoint CGPointValue];
+    NSArray* areaArray  = [self mapAreas];
 
-    for(MTMapArea *anArea in areaArray)
+    for (MTMapArea *anArea in areaArray)
     {
-        if([anArea isAreaSelected:aTouchPoint])
+        if ([anArea isAreaSelected:aTouchPoint])
         {
-            if(_delegate != nil
+            if (_delegate != nil
                && [_delegate conformsToProtocol:@protocol(MTImageMapDelegate)]
                && [_delegate
                    respondsToSelector:
-                   @selector(imageMapView:didSelectMapArea: areaCentrePoint :)])
+                   @selector(imageMapView:didSelectMapArea:areaCentrePoint:)])
             {
                 [_delegate
                  imageMapView:self
-                 didSelectMapArea:anArea.areaID areaCentrePoint : anArea.centrePoint];
+                 didSelectMapArea:anArea.areaID
+                 areaCentrePoint:anArea.centrePoint];
             }
             break;
         }
@@ -276,16 +269,11 @@
 -(void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
 {
     [super touchesEnded:touches withEvent:event];
-
     // cancel previous touch ended event
     [NSObject cancelPreviousPerformRequestsWithTarget:self];
     
-	CGPoint touchPoint  = \
-        [[touches anyObject] locationInView:self];
-
-    NSValue*    touchValue =\
-        [NSValue
-         valueWithCGPoint:touchPoint];
+	CGPoint touchPoint = [[touches anyObject] locationInView:self];
+    NSValue* touchValue = [NSValue valueWithCGPoint:touchPoint];
 
     // perform new one
     [self
@@ -311,7 +299,7 @@
 {
 	[super drawRect:rect];
     
-    if(_mapAreasToDebug == nil || ![_mapAreasToDebug count])
+    if (_mapAreasToDebug == nil || ![_mapAreasToDebug count])
         return;
 
 	CGContextRef context = UIGraphicsGetCurrentContext();
@@ -332,7 +320,7 @@
 	CGContextAddEllipseInRect(context, dotRect);
 
     CGContextDrawPath(context, kCGPathStroke);
-    for(MTMapArea *anArea in _mapAreasToDebug)
+    for (MTMapArea *anArea in _mapAreasToDebug)
     {
         CGContextAddPath(context, anArea.mapArea.CGPath);
     }
@@ -347,33 +335,32 @@
 #pragma mark Map Area Model
 @implementation MTMapArea
 {
-    UIBezierPath        *_mapArea;
-    NSUInteger          _areaID;
-    CGPoint             _centrePoint;
+    UIBezierPath *_mapArea;
+    NSUInteger   _areaID;
+    CGPoint      _centrePoint;
 }
-@synthesize mapArea         = _mapArea;
-@synthesize areaID          = _areaID;
-@synthesize centrePoint     = _centrePoint;
+@synthesize mapArea = _mapArea;
+@synthesize areaID = _areaID;
+@synthesize centrePoint = _centrePoint;
 
 -(id)initWithCoordinate:(NSString*)inStrCoordinate areaID:(NSInteger)inAreaID
 {
     self = [super init];
     
-    if(self != nil)
+    if (self != nil)
     {
         // set area id
         _areaID = inAreaID;
         
         // create map area out of coordinate string
-        MTASSERT(!IS_NULL_STRING(inStrCoordinate)
-                 ,@"*** string must contain area coordinates ***");
+        MTASSERT(!IS_NULL_STRING(inStrCoordinate),
+                 @"*** string must contain area coordinates ***");
         
-        NSArray*    arrAreaCoordinates = \
-        [inStrCoordinate componentsSeparatedByString:@","];
-        
-        NSUInteger  countTotal      = [arrAreaCoordinates count];
-        NSUInteger  countCoord      = countTotal/2;
-        BOOL        isFirstPoint    = YES;
+        NSArray* arrAreaCoordinates = \
+            [inStrCoordinate componentsSeparatedByString:@","];
+        NSUInteger countTotal = [arrAreaCoordinates count];
+        NSUInteger countCoord = countTotal / 2;
+        BOOL isFirstPoint = YES;
         
         // # of coordinate must be in even numbers.
         //http://stackoverflow.com/questions/160930/how-do-i-check-if-an-integer-is-even-or-odd
@@ -381,41 +368,34 @@
         MTASSERT((3 <= countCoord), @"At least, three dots to represent an area");
         
         // add points to bezier path
-        UIBezierPath  *path         = [UIBezierPath new];
+        UIBezierPath *path = [UIBezierPath new];
+        double minX = [[arrAreaCoordinates objectAtIndex:0] doubleValue];
+        double maxX = [[arrAreaCoordinates objectAtIndex:0] doubleValue];
+        double minY = [[arrAreaCoordinates objectAtIndex:1] doubleValue];
+        double maxY = [[arrAreaCoordinates objectAtIndex:1] doubleValue];
         
-        double minX  = [[arrAreaCoordinates
-                         objectAtIndex:0] doubleValue];
-        double maxX = [[arrAreaCoordinates
-                        objectAtIndex:0] doubleValue];
-        double minY  = [[arrAreaCoordinates
-                         objectAtIndex:1] doubleValue];
-        double maxY = [[arrAreaCoordinates
-                        objectAtIndex:1] doubleValue];
-        
-        for(NSUInteger i = 0; i < countCoord; i++)
+        for (NSUInteger i = 0; i < countCoord; i++)
         {
             NSUInteger index = i<<1;
             CGPoint aPoint = \
-            CGPointMake([[arrAreaCoordinates
-                          objectAtIndex:index] floatValue]
-                        , [[arrAreaCoordinates
-                            objectAtIndex:index+1] floatValue]);
+            CGPointMake([[arrAreaCoordinates objectAtIndex:index] floatValue],
+                        [[arrAreaCoordinates objectAtIndex:index + 1] floatValue]);
             
-            if(isFirstPoint)
+            if (isFirstPoint)
             {
                 [path moveToPoint:aPoint];
                 isFirstPoint = NO;
             }
             
-            if(aPoint.x < minX){
+            if (aPoint.x < minX) {
                 minX = aPoint.x;
-            }else if(aPoint.x > maxX){
+            } else if (aPoint.x > maxX) {
                 maxX = aPoint.x;
             }
             
-            if(aPoint.y < minY){
+            if (aPoint.y < minY) {
                 minY = aPoint.y;
-            }else if(aPoint.y > maxY){
+            } else if (aPoint.y > maxY) {
                 maxY = aPoint.y;
             }
             
@@ -425,8 +405,8 @@
         
         [path closePath];
         
-        double cx = minX + (maxX - minX)/2.0;
-        double cy = minY + (maxY - minY)/2.0;
+        double cx = minX + (maxX - minX) / 2.0;
+        double cy = minY + (maxY - minY) / 2.0;
         
         self.mapArea = path;
         self.centrePoint = CGPointMake(cx,cy);
