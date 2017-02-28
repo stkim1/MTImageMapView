@@ -47,11 +47,10 @@
 #endif
 
 #define IS_NULL_STRING(__POINTER) \
-                        (__POINTER == nil || \
-                        __POINTER == (NSString *)[NSNull null] || \
-                        ![__POINTER isKindOfClass:[NSString class]] || \
-                        ![__POINTER length])
-
+    (__POINTER == nil || \
+    __POINTER == (NSString *)[NSNull null] || \
+    ![__POINTER isKindOfClass:[NSString class]] || \
+    ![__POINTER length])
 
 
 #pragma mark - INTERFACES
@@ -80,11 +79,11 @@
 -(void)_performHitTestOnArea:(NSValue *)inTouchPoint;
 
 #ifdef DEBUG_MAP_AREA
-	#if __has_feature(objc_arc)
-		@property (nonatomic, strong) MTMapDebugView *viewDebugPath;
-	#else
-		@property (nonatomic, retain) MTMapDebugView *viewDebugPath;
-	#endif
+    #if __has_feature(objc_arc)
+        @property (nonatomic, strong) MTMapDebugView *viewDebugPath;
+    #else
+        @property (nonatomic, retain) MTMapDebugView *viewDebugPath;
+    #endif
 #endif
 
 @end
@@ -95,9 +94,9 @@
 @implementation MTImageMapView
 {
 #if __has_feature(objc_arc)
-	__unsafe_unretained id<MTImageMapDelegate>  _delegate;
+    __unsafe_unretained id<MTImageMapDelegate>  _delegate;
 #else
-	id<MTImageMapDelegate>  _delegate;
+    id<MTImageMapDelegate> _delegate;
 #endif
 }
 
@@ -201,7 +200,7 @@
     }
     
 #if !OS_OBJECT_USE_OBJC
-	dispatch_release(queue);
+    dispatch_release(queue);
     dispatch_release(group);
 #endif
 }
@@ -227,8 +226,7 @@
     
 #ifdef DEBUG_MAP_AREA
     self.viewDebugPath = \
-		[[MTMapDebugView alloc]
-		 initWithFrame:imageFrame];
+        [[MTMapDebugView alloc] initWithFrame:imageFrame];
     [self.viewDebugPath setBackgroundColor:[UIColor clearColor]];
     [self addSubview:self.viewDebugPath];
 
@@ -244,7 +242,7 @@
     MTASSERT(inTouchPoint != nil, @"touch point is null");
     
     CGPoint aTouchPoint = [inTouchPoint CGPointValue];
-    NSArray* areaArray  = [self mapAreas];
+    NSArray* areaArray = [self mapAreas];
 
     for (MTMapArea *anArea in areaArray)
     {
@@ -272,7 +270,7 @@
     // cancel previous touch ended event
     [NSObject cancelPreviousPerformRequestsWithTarget:self];
     
-	CGPoint touchPoint = [[touches anyObject] locationInView:self];
+    CGPoint touchPoint = [[touches anyObject] locationInView:self];
     NSValue* touchValue = [NSValue valueWithCGPoint:touchPoint];
 
     // perform new one
@@ -297,27 +295,27 @@
 
 - (void)drawRect:(CGRect)rect
 {
-	[super drawRect:rect];
+    [super drawRect:rect];
     
     if (_mapAreasToDebug == nil || ![_mapAreasToDebug count])
         return;
 
-	CGContextRef context = UIGraphicsGetCurrentContext();
-	CGContextSaveGState(context);
-	// drawing path
-	CGContextSetLineWidth(context, 1.0);
-	UIColor *lineColor = [UIColor blueColor];
-	CGContextSetStrokeColorWithColor(context, lineColor.CGColor);
-	CGContextSetFillColorWithColor(context, lineColor.CGColor);
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    CGContextSaveGState(context);
+    // drawing path
+    CGContextSetLineWidth(context, 1.0);
+    UIColor *lineColor = [UIColor blueColor];
+    CGContextSetStrokeColorWithColor(context, lineColor.CGColor);
+    CGContextSetFillColorWithColor(context, lineColor.CGColor);
     
-	CGContextDrawPath(context, kCGPathFillStroke);
-	CGContextSetLineJoin(context,kCGLineJoinRound);
-	CGContextSetLineCap(context,kCGLineCapButt);
-	CGContextSetBlendMode(context,kCGBlendModePlusLighter);
+    CGContextDrawPath(context, kCGPathFillStroke);
+    CGContextSetLineJoin(context,kCGLineJoinRound);
+    CGContextSetLineCap(context,kCGLineCapButt);
+    CGContextSetBlendMode(context,kCGBlendModePlusLighter);
     
-	CGRect dotRect = \
+    CGRect dotRect = \
         CGRectMake(_aTouchPoint.x - 3, _aTouchPoint.y - 3.0, 5.0, 5.0);
-	CGContextAddEllipseInRect(context, dotRect);
+    CGContextAddEllipseInRect(context, dotRect);
 
     CGContextDrawPath(context, kCGPathStroke);
     for (MTMapArea *anArea in _mapAreasToDebug)
@@ -325,8 +323,8 @@
         CGContextAddPath(context, anArea.mapArea.CGPath);
     }
 
-	CGContextStrokePath(context);
-	CGContextRestoreGState(context);
+    CGContextStrokePath(context);
+    CGContextRestoreGState(context);
 }
 @end
 #endif
@@ -425,6 +423,6 @@
 -(void)dealloc
 {
     self.mapArea = nil;
-	SAFE_DEALLOC_CHECK(self);
+    SAFE_DEALLOC_CHECK(self);
 }
 @end

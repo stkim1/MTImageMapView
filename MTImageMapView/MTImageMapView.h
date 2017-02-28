@@ -46,5 +46,3 @@
 -(void)setMapping:(NSArray *)inArrMapping
         doneBlock:(void (^)(MTImageMapView *imageMapView))inBlockDone;
 @end
-
-
