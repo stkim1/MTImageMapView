@@ -111,7 +111,7 @@
 -(id)initWithImage:(UIImage *)image
 {
     self = [super initWithImage:image];
-    if ( self != nil)
+    if (self != nil)
     {
         self.mapAreas = [NSMutableArray arrayWithCapacity:0];
         [self _finishConstructionWithImage:image];
@@ -149,7 +149,7 @@
     self.mapAreas = nil;
     self.delegate = nil;
 
-	SAFE_DEALLOC_CHECK(self);
+    SAFE_DEALLOC_CHECK(self);
 }
 
 -(BOOL)canBecomeFirstResponder
